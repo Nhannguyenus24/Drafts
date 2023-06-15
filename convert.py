@@ -16,6 +16,3 @@ def convert(number, base):
         number = remainder
         num //= base
     return result
-
-str = convert(31,16)
-print(str)
