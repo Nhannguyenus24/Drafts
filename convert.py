@@ -1,4 +1,4 @@
-def convert(number, base):
+def convert(number, base): #binary - hexa
     num = 1
     result = ""
     list = ["A", "B", "C", "D", "E", "F"]
