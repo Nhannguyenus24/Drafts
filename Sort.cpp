@@ -72,11 +72,42 @@ void merge(vector<int>& arr, int left, int mid, int right) {
         k++;
     }
 }
+
 void mergeSort(vector<int>& arr, int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
         mergeSort(arr, left, mid);
         mergeSort(arr, mid + 1, right);
         merge(arr, left, mid, right);
+    }
+}
+
+void shakerSort(int arr[], int n) { // or cocktailSort
+    bool swapped = true;
+    int start = 0;
+    int end = n - 1;
+
+    while (swapped) {
+        swapped = false;
+        for (int i = start; i < end; ++i) {
+            if (arr[i] > arr[i + 1]) {
+                swap(arr[i], arr[i + 1]);
+                swapped = true;
+            }
+        }
+
+        if (!swapped) {
+            break;
+        }
+
+        swapped = false;
+        --end;
+        for (int i = end - 1; i >= start; --i) {
+            if (arr[i] > arr[i + 1]) {
+                swap(arr[i], arr[i + 1]);
+                swapped = true;
+            }
+        }
+        ++start;
     }
 }
