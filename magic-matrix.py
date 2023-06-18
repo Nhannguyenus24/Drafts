@@ -28,3 +28,23 @@ def WELCOME(number):
             s += char
             s += char
 
+"""
+--------e--------
+------e-d-e------
+----e-d-c-d-e----
+--e-d-c-b-c-d-e--
+e-d-c-b-a-b-c-d-e
+--e-d-c-b-c-d-e--
+----e-d-c-d-e----
+------e-d-e------
+--------e-------- """
+def rangoli(size):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    width = (size - 1) * 4 + 1
+    rows = []
+    for i in range(size):
+        left = '-'.join(alphabet[size - i - 1:size])
+        row = left[::-1] + left[1:]
+        rows.append(row.center(width, '-'))
+    print('\n'.join(rows))
+    print('\n'.join(rows[:size-1][::-1]))
