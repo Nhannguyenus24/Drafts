@@ -111,3 +111,32 @@ void shakerSort(int arr[], int n) { // or cocktailSort
         ++start;
     }
 }
+#pragma region Radixsort //O(kn) k is number of digits of the maximun element
+int findMax(int* arr, int n){
+    int Max = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > Max)
+            Max = arr[i];
+    return Max;
+}
+void countSort(int*& arr, int n, int base){
+    int count[10] = {0}, i;
+    int* output = new int[n];
+    for (i = 0; i < n; i++)
+        count[(arr[i] / base) % 10]++;
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+    for (i = n - 1; i >= 0; i--){
+        output[count[(arr[i] / base) % 10] - 1] = arr[i];
+        count[(arr[i] / base) % 10]--;
+    }
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+    delete[] output;
+}
+void radixSort(int* arr, int n){
+    int m = findMax(arr, n);
+    for( int base = 1; m / base > 0; base *= 10)
+        countSort(arr, n, base);
+}
+#pragma endregion 
