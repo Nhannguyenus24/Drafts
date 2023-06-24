@@ -111,7 +111,8 @@ void shakerSort(int arr[], int n) { // or cocktailSort
         ++start;
     }
 }
-#pragma region Radixsort //O(kn) k is number of digits of the maximun element
+
+ //O(kn) k is number of digits of the maximun element
 int findMax(int* arr, int n){
     int Max = arr[0];
     for (int i = 1; i < n; i++)
@@ -139,4 +140,29 @@ void radixSort(int* arr, int n){
     for( int base = 1; m / base > 0; base *= 10)
         countSort(arr, n, base);
 }
-#pragma endregion 
+
+int partition(int* arr, int low, int high) {
+    int pivot = arr[high];  // Choose the last element as the pivot
+    int i = low - 1;        // Index of smaller element
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}
+
+// Quicksort recursive function
+void quicksort(int* arr, int low, int high) {
+    if (low < high) {
+        // Partition the array and get the pivot index
+        int pivotIndex = partition(arr, low, high);
+
+        // Recursive call to sort the left and right subarrays
+        quicksort(arr, low, pivotIndex - 1);
+        quicksort(arr, pivotIndex + 1, high);
+    }
+}
