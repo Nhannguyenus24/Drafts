@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: chatbot_mysql
+    environment:
+      MYSQL_DATABASE: chatbot
+      MYSQL_USER: chatbot_user
+      MYSQL_PASSWORD: chatbot_pass
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - chatbot-network
+
+  redis:
+    image: redis:7
+    container_name: chatbot_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - chatbot-network
+
+  # Chatbot Backend Service
+  chatbot-backend:
+    build:
+      context: ./chatbot
+      dockerfile: Dockerfile
+    container_name: chatbot_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/chatbot?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=chatbot_user
+      - SPRING_DATASOURCE_PASSWORD=chatbot_pass
+      - GOOGLE_API_KEY=AIzaSyAwqEdXzpEaXyGdyqEQ4kOT3NtgETnis6w
+    depends_on:
+      - redis
+      - mysql
+    networks:
+      - chatbot-network
+
+  # Frontend Service
+  chatbot-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chatbot_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - chatbot-backend
+    networks:
+      - chatbot-network
+
+volumes:
+  mysql_data:
+
+networks:
+  chatbot-network:
+    driver: bridge
