@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  tic-tac-toe:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: tic-tac-toe-game
+    
+  # Development service (optional)
+  tic-tac-toe-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+    container_name: tic-tac-toe-dev
+    profiles:
+      - dev
+
+networks:
+  default:
+    name: tic-tac-toe-network
