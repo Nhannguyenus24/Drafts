@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Paper,
   Typography,
@@ -97,9 +96,6 @@ const GameInfo = ({
             onChange={(e) => onGameModeChange(e.target.value)}
             disabled={isGameActive}
           >
-            <MenuItem value="pvp">
-              Player vs Player
-            </MenuItem>
             <MenuItem value="easy">
               Player vs Easy Bot
             </MenuItem>

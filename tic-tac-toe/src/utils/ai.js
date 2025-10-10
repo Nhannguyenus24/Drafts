@@ -1,12 +1,5 @@
-// AI algorithms for Tic-Tac-Toe
-
 import { checkWinner, isBoardFull, getAvailableMoves, makeMove } from './gameLogic.js';
 
-/**
- * Easy AI - makes random moves
- * @param {Array} board - current board state
- * @returns {number} - chosen move index
- */
 export const getRandomMove = (board) => {
   const availableMoves = getAvailableMoves(board);
   
@@ -18,38 +11,49 @@ export const getRandomMove = (board) => {
   return availableMoves[randomIndex];
 };
 
-/**
- * Hard AI - uses minimax algorithm with alpha-beta pruning
- * @param {Array} board - current board state
- * @param {string} aiPlayer - AI player symbol ('X' or 'O')
- * @param {boolean} saveTree - whether to save tree data for visualization
- * @returns {number|Object} - chosen move index or object with move and tree data
- */
 export const getBestMove = (board, aiPlayer, saveTree = false) => {
   const humanPlayer = aiPlayer === 'X' ? 'O' : 'X';
   
   let bestScore = -Infinity;
   let bestMove = -1;
   
-  // Tree data for visualization
+  // Tree data for visualization and analysis
   let treeData = null;
+  let startTime = null;
+  
   if (saveTree) {
+    startTime = performance.now();
     treeData = {
       nodes: [],
       edges: [],
       stats: {
         totalNodes: 0,
+        leafNodes: 0,
         prunedNodes: 0,
-        maxDepth: 0
+        maxDepth: 0,
+        durationMs: 0,
+        cutoffs: {
+          alphaCut: 0,
+          betaCut: 0
+        },
+        evalsByDepth: {},
+        branchingAtDepth: {}
       },
+      pruneEvents: [],
+      principalVariation: [],
+      roots: [],
+      orderingHints: [],
       bestMove: -1
     };
   }
   
   const availableMoves = getAvailableMoves(board);
   
+  // Root level candidates
   for (const move of availableMoves) {
     const newBoard = makeMove(board, move, aiPlayer);
+    const rootNodeId = treeData ? treeData.stats.totalNodes : null;
+    
     const score = minimaxWithTree(
       newBoard, 
       0, 
@@ -63,6 +67,14 @@ export const getBestMove = (board, aiPlayer, saveTree = false) => {
       move
     );
     
+    if (saveTree) {
+      treeData.roots.push({
+        move,
+        score,
+        nodeId: rootNodeId
+      });
+    }
+    
     if (score > bestScore) {
       bestScore = score;
       bestMove = move;
@@ -70,34 +82,111 @@ export const getBestMove = (board, aiPlayer, saveTree = false) => {
   }
   
   if (saveTree) {
+    const endTime = performance.now();
+    treeData.stats.durationMs = +(endTime - startTime).toFixed(2);
     treeData.bestMove = bestMove;
+    
+    // Calculate branching factors
+    const childrenCount = {};
+    treeData.edges.forEach(edge => {
+      if (!edge.pruned) {
+        childrenCount[edge.from] = (childrenCount[edge.from] || 0) + 1;
+      }
+    });
+    
+    const depthBranching = {};
+    treeData.nodes.forEach(node => {
+      if (!node.isPruned && childrenCount[node.id]) {
+        if (!depthBranching[node.depth]) {
+          depthBranching[node.depth] = [];
+        }
+        depthBranching[node.depth].push(childrenCount[node.id]);
+      }
+    });
+    
+    Object.keys(depthBranching).forEach(depth => {
+      const branches = depthBranching[depth];
+      const avg = branches.reduce((a, b) => a + b, 0) / branches.length;
+      treeData.stats.branchingAtDepth[depth] = +avg.toFixed(2);
+    });
+    
+    // Extract principal variation (best path)
+    treeData.principalVariation = extractPrincipalVariation(treeData, bestMove);
+    
     return { move: bestMove, treeData };
   }
   
   return bestMove;
 };
 
-/**
- * Minimax algorithm with alpha-beta pruning and tree visualization
- * @param {Array} board - current board state
- * @param {number} depth - current depth in the search tree
- * @param {boolean} isMaximizing - whether current player is maximizing
- * @param {string} aiPlayer - AI player symbol
- * @param {string} humanPlayer - human player symbol
- * @param {number} alpha - alpha value for pruning
- * @param {number} beta - beta value for pruning
- * @param {Object} treeData - tree data for visualization
- * @param {number} parentNodeId - parent node ID for tree structure
- * @param {number} move - the move that led to this board state
- * @returns {number} - evaluation score
- */
+// Helper function to extract principal variation
+const extractPrincipalVariation = (treeData, bestMove) => {
+  const pv = [bestMove];
+  
+  // Find the root node with bestMove
+  let currentNodeId = null;
+  for (const root of treeData.roots) {
+    if (root.move === bestMove) {
+      currentNodeId = root.nodeId;
+      break;
+    }
+  }
+  
+  if (currentNodeId === null) return pv;
+  
+  // Traverse down the tree following the best evaluation
+  while (true) {
+    const currentNode = treeData.nodes.find(n => n.id === currentNodeId);
+    if (!currentNode || currentNode.isLeaf) break;
+    
+    // Find best child
+    const childEdges = treeData.edges.filter(e => e.from === currentNodeId && !e.pruned);
+    if (childEdges.length === 0) break;
+    
+    let bestChild = null;
+    let bestValue = currentNode.type === 'max' ? -Infinity : Infinity;
+    
+    for (const edge of childEdges) {
+      const childNode = treeData.nodes.find(n => n.id === edge.to);
+      if (!childNode || childNode.isPruned) continue;
+      
+      const childValue = childNode.value;
+      if (typeof childValue === 'number') {
+        if (currentNode.type === 'max' && childValue > bestValue) {
+          bestValue = childValue;
+          bestChild = childNode;
+        } else if (currentNode.type === 'min' && childValue < bestValue) {
+          bestValue = childValue;
+          bestChild = childNode;
+        }
+      }
+    }
+    
+    if (!bestChild || bestChild.move === null || bestChild.move === undefined) break;
+    
+    pv.push(bestChild.move);
+    currentNodeId = bestChild.id;
+    
+    // Safety: max PV length
+    if (pv.length > 9) break;
+  }
+  
+  return pv;
+};
+
 const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alpha, beta, treeData, parentNodeId, move = null) => {
   const winner = checkWinner(board);
   
-  // Create node for tree visualization
   let nodeId = null;
   if (treeData) {
     nodeId = treeData.stats.totalNodes++;
+    
+    // Track evaluations by depth
+    if (!treeData.stats.evalsByDepth[depth]) {
+      treeData.stats.evalsByDepth[depth] = 0;
+    }
+    treeData.stats.evalsByDepth[depth]++;
+    
     const node = {
       id: nodeId,
       depth,
@@ -107,7 +196,8 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
       board: [...board],
       value: undefined,
       move,
-      isLeaf: false
+      isLeaf: false,
+      childrenEvaluated: 0
     };
     
     treeData.nodes.push(node);
@@ -130,6 +220,7 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
       if (node) {
         node.value = 10 - depth;
         node.isLeaf = true;
+        treeData.stats.leafNodes++;
       }
     }
     return 10 - depth;
@@ -140,6 +231,7 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
       if (node) {
         node.value = depth - 10;
         node.isLeaf = true;
+        treeData.stats.leafNodes++;
       }
     }
     return depth - 10;
@@ -150,12 +242,22 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
       if (node) {
         node.value = 0;
         node.isLeaf = true;
+        treeData.stats.leafNodes++;
       }
     }
     return 0;
   }
   
   const availableMoves = getAvailableMoves(board);
+  
+  // Store move ordering hint
+  if (treeData) {
+    treeData.orderingHints.push({
+      nodeId,
+      depth,
+      movesOrder: [...availableMoves]
+    });
+  }
   
   if (isMaximizing) {
     let maxEval = -Infinity;
@@ -176,16 +278,34 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
         move
       );
       
+      if (treeData && nodeId !== null) {
+        const node = treeData.nodes.find(n => n.id === nodeId);
+        if (node) node.childrenEvaluated++;
+      }
+      
       maxEval = Math.max(maxEval, eval_);
       alpha = Math.max(alpha, eval_);
       
       // Alpha-beta pruning
       if (beta <= alpha) {
-        // Mark remaining moves as pruned
+        // Record pruning event
         if (treeData) {
+          const prunedMoves = availableMoves.slice(i + 1);
+          treeData.pruneEvents.push({
+            atNode: nodeId,
+            depth,
+            cutoffType: 'alpha',
+            bound: alpha,
+            afterChildIndex: i,
+            prunedMoves,
+            beta,
+            alpha
+          });
+          treeData.stats.cutoffs.alphaCut++;
+          
+          // Mark remaining moves as pruned
           for (let j = i + 1; j < availableMoves.length; j++) {
             treeData.stats.prunedNodes++;
-            // Optionally create pruned nodes for visualization
             const prunedNodeId = treeData.stats.totalNodes++;
             treeData.nodes.push({
               id: prunedNodeId,
@@ -239,16 +359,33 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
         move
       );
       
+      if (treeData && nodeId !== null) {
+        const node = treeData.nodes.find(n => n.id === nodeId);
+        if (node) node.childrenEvaluated++;
+      }
+      
       minEval = Math.min(minEval, eval_);
       beta = Math.min(beta, eval_);
       
       // Alpha-beta pruning
       if (beta <= alpha) {
-        // Mark remaining moves as pruned
+        // Record pruning event
         if (treeData) {
+          const prunedMoves = availableMoves.slice(i + 1);
+          treeData.pruneEvents.push({
+            atNode: nodeId,
+            depth,
+            cutoffType: 'beta',
+            bound: beta,
+            afterChildIndex: i,
+            prunedMoves,
+            beta,
+            alpha
+          });
+          treeData.stats.cutoffs.betaCut++;
+          
           for (let j = i + 1; j < availableMoves.length; j++) {
             treeData.stats.prunedNodes++;
-            // Optionally create pruned nodes for visualization
             const prunedNodeId = treeData.stats.totalNodes++;
             treeData.nodes.push({
               id: prunedNodeId,
@@ -286,14 +423,6 @@ const minimaxWithTree = (board, depth, isMaximizing, aiPlayer, humanPlayer, alph
   }
 };
 
-/**
- * Get AI move based on difficulty
- * @param {Array} board - current board state
- * @param {string} aiPlayer - AI player symbol
- * @param {string} difficulty - 'easy' or 'hard'
- * @param {boolean} saveTree - whether to save tree data for visualization
- * @returns {number|Object} - chosen move index or object with move and tree data
- */
 export const getAIMove = (board, aiPlayer, difficulty = 'hard', saveTree = false) => {
   if (difficulty === 'easy') {
     const move = getRandomMove(board);
@@ -303,30 +432,15 @@ export const getAIMove = (board, aiPlayer, difficulty = 'hard', saveTree = false
   }
 };
 
-/**
- * Evaluates if a move is winning
- * @param {Array} board - current board state
- * @param {number} move - move to evaluate
- * @param {string} player - player making the move
- * @returns {boolean} - true if move is winning
- */
 export const isWinningMove = (board, move, player) => {
   const testBoard = makeMove(board, move, player);
   return checkWinner(testBoard) === player;
 };
 
-/**
- * Evaluates if a move blocks opponent's win
- * @param {Array} board - current board state
- * @param {number} move - move to evaluate
- * @param {string} player - player making the move
- * @returns {boolean} - true if move blocks opponent's win
- */
 export const isBlockingMove = (board, move, player) => {
   const opponent = player === 'X' ? 'O' : 'X';
   const availableMoves = getAvailableMoves(board);
   
-  // Check if opponent can win in the next move without this blocking move
   for (const opponentMove of availableMoves) {
     if (opponentMove !== move && isWinningMove(board, opponentMove, opponent)) {
       return true;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -90,8 +90,8 @@ function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlphaBetaTree, setShowAlphaBetaTree] = useState(false);
-  const [alphaBetaTreeData, setAlphaBetaTreeData] = useState(null);
-  const [lastBoardState, setLastBoardState] = useState(null);
+  const [currentGameTrace, setCurrentGameTrace] = useState({ turns: [] }); // Trace của game hiện tại
+
 
   // Get winning line for highlighting
   const getWinningLine = useCallback(() => {
@@ -110,7 +110,6 @@ function App() {
     return [];
   }, [board]);
 
-  // Update game status when board changes
   useEffect(() => {
     const status = getGameStatus(board, currentPlayer);
     setGameStatus(status);
@@ -129,12 +128,11 @@ function App() {
         }));
       }
       
-      // Show alpha-beta tree if we have tree data and it's human vs hard bot
-      if (alphaBetaTreeData && gameMode === 'hard' && !isAutoPlaying) {
+      if (currentGameTrace.turns.length > 0 && gameMode === 'hard' && !isAutoPlaying) {
         setShowAlphaBetaTree(true);
       }
     }
-  }, [board, currentPlayer, alphaBetaTreeData, gameMode, isAutoPlaying]);
+  }, [board, currentPlayer, currentGameTrace, gameMode, isAutoPlaying]);
 
   // AI move handler
   const makeAIMove = useCallback(() => {
@@ -159,10 +157,22 @@ function App() {
         setBoard(newBoard);
         setCurrentPlayer(prev => prev === 'X' ? 'O' : 'X');
         
-        // Save tree data and board state for visualization
+        // Lưu trace cho lượt AI (để hiển thị sau khi game kết thúc)
         if (treeData && shouldSaveTree) {
-          setAlphaBetaTreeData(treeData);
-          setLastBoardState([...board]); // Board state before AI move
+          setCurrentGameTrace(prev => ({
+            turns: [
+              ...prev.turns,
+              {
+                turn: Math.floor(prev.turns.length / 2) + 1,
+                phase: 'ai',
+                player: currentPlayer,
+                move: aiMove,
+                board: [...newBoard],
+                treeStats: treeData.stats,
+                status: getGameStatus(newBoard, currentPlayer === 'X' ? 'O' : 'X')
+              }
+            ]
+          }));
         }
       } catch (error) {
         console.error('AI move error:', error);
@@ -237,8 +247,7 @@ function App() {
     setCurrentPlayer('X');
     setGameStatus({ isGameOver: false, winner: null, status: 'Next player: X', isDraw: false });
     setShowAlphaBetaTree(false);
-    setAlphaBetaTreeData(null);
-    setLastBoardState(null);
+    setCurrentGameTrace({ turns: [] });
   };
 
   // Handle game mode change
@@ -247,7 +256,7 @@ function App() {
     handleNewGame();
     setIsAutoPlaying(false);
     setShowAlphaBetaTree(false);
-    setAlphaBetaTreeData(null);
+    setCurrentGameTrace({ turns: [] });
   };
 
   // Toggle auto-play for bot vs bot
@@ -313,17 +322,15 @@ function App() {
           {score.X + score.O + score.draws > 0 && (
             <Box sx={{ textAlign: 'center', mt: 2 }}>
               <Typography variant="body2" color="text.secondary">
-                Games played: {score.X + score.O + score.draws} | Draws: {score.draws}
+                Games played: {score.X + score.O + score.draws} | Draws: {score.draws} | X wins: {score.X} | O wins: {score.O}
               </Typography>
             </Box>
           )}
         </GameContainer>
-        
-        {/* Alpha-Beta Tree Visualization */}
-        {showAlphaBetaTree && alphaBetaTreeData && (
+      
+        {showAlphaBetaTree && (
           <AlphaBetaTree
-            treeData={alphaBetaTreeData}
-            gameBoard={lastBoardState}
+            traceData={currentGameTrace}
             onClose={() => setShowAlphaBetaTree(false)}
           />
         )}
