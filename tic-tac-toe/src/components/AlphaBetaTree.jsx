@@ -15,7 +15,30 @@ const ExplanationContainer = styled(Paper)(({ theme }) => ({
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[8],
   zIndex: 1000,
+
+  /* 🎨 Custom scrollbar */
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: theme.palette.background.default,
+    borderRadius: '8px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: theme.palette.mode === 'dark'
+      ? '#555'
+      : '#ccc',
+    borderRadius: '8px',
+    border: `2px solid ${theme.palette.background.paper}`,
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    backgroundColor: theme.palette.mode === 'dark'
+      ? '#777'
+      : '#999',
+  },
 }));
+
+
 const glowPulse = keyframes`
   0% {
     text-shadow: 0 0 10px rgba(255, 152, 0, 0.7),
@@ -72,15 +95,15 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
       <ExplanationContainer>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" color="primary">
-            Giải thích Alpha-Beta Pruning
+            Alpha-Beta Pruning Explanation
           </Typography>
           <Button onClick={onClose} size="small" color="primary">
-            Đóng
+            Close
           </Button>
         </Box>
         <Divider sx={{ mb: 2 }} />
         <Typography variant="body2" color="text.secondary">
-          Không có dữ liệu lượt AI để hiển thị
+          No AI turn data available to display
         </Typography>
       </ExplanationContainer>
     );
@@ -109,19 +132,19 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
     <ExplanationContainer>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6" color="primary">
-          Giải thích Alpha-Beta Pruning
+          Alpha-Beta Pruning Explanation
         </Typography>
         <Button onClick={onClose} size="small" color="primary">
-          Đóng
+          Close
         </Button>
       </Box>
       
       <Divider sx={{ mb: 3 }} />
 
-      {/* Chọn lượt AI */}
+      {/* AI Turn Selection */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          <strong>Chọn lượt AI:</strong>
+          <strong>Select AI Turn:</strong>
         </Typography>
         <ButtonGroup size="small" variant="outlined" sx={{ flexWrap: 'wrap' }}>
           {aiTurns.map((turn, index) => (
@@ -131,21 +154,21 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
               onClick={() => setSelectedTurnIndex(index)}
               sx={{ minWidth: 60 }}
             >
-              Lượt {turn.turn}
+              Turn {turn.turn}
             </Button>
           ))}
         </ButtonGroup>
       </Box>
 
-      {/* Bàn cờ với ô highlight */}
+      {/* Board with highlighted square */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          <strong>Trạng thái bàn cờ sau lượt AI {currentTurn.turn}:</strong>
+          <strong>Board state after AI turn {currentTurn.turn}:</strong>
         </Typography>
         {renderBoard()}
         <Box sx={{ mt: 2, textAlign: 'center' }}>
           <Chip
-            label={`AI đánh ô ${aiMove} (${currentTurn.player})`}
+            label={`AI played square ${aiMove} (${currentTurn.player})`}
             color="warning"
             sx={{ fontWeight: 'bold' }}
           />
@@ -154,43 +177,43 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
 
       <Divider sx={{ mb: 2 }} />
 
-      {/* Lý do quyết định */}
+      {/* Decision Reasoning */}
       <Box sx={{ mb: 3, p: 2, backgroundColor: 'primary.light', borderRadius: 1 }}>
         <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
-          📊 Lý do quyết định:
+          📊 Decision Reasoning:
         </Typography>
         <Typography variant="body2">
-          AI sử dụng thuật toán <strong>Minimax với Alpha-Beta Pruning</strong> để tìm nước đi tối ưu. 
-          Thuật toán đánh giá tất cả các khả năng và chọn nước đi mang lại lợi thế cao nhất.
+          The AI uses the <strong>Minimax algorithm with Alpha-Beta Pruning</strong> to find the optimal move. 
+          The algorithm evaluates all possibilities and chooses the move that provides the highest advantage.
         </Typography>
       </Box>
 
       {/* Thống kê Alpha-Beta - Phân tích chi tiết */}
       {treeStats && (
         <>
-          {/* Tổng quan hiệu suất */}
+          {/* Performance Overview */}
           <Box sx={{ p: 2, backgroundColor: 'grey.100', borderRadius: 1, mb: 2 }}>
             <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
-              📈 Tổng quan hiệu suất:
+              📈 Performance Overview:
             </Typography>
             <Typography variant="body2" component="div">
-              • <strong>Tổng nút đã duyệt:</strong> {treeStats.totalNodes?.toLocaleString() || 0}<br/>
-              • <strong>Nút lá (terminal):</strong> {treeStats.leafNodes?.toLocaleString() || 0}<br/>
-              • <strong>Nhánh bị cắt tỉa:</strong> {treeStats.prunedNodes?.toLocaleString() || 0} 
+              • <strong>Total nodes explored:</strong> {treeStats.totalNodes?.toLocaleString() || 0}<br/>
+              • <strong>Leaf nodes (terminal):</strong> {treeStats.leafNodes?.toLocaleString() || 0}<br/>
+              • <strong>Pruned branches:</strong> {treeStats.prunedNodes?.toLocaleString() || 0} 
               ({treeStats.totalNodes > 0 ? ((treeStats.prunedNodes / treeStats.totalNodes) * 100).toFixed(1) : 0}%)<br/>
-              • <strong>Độ sâu tối đa:</strong> {treeStats.maxDepth || 0}<br/>
+              • <strong>Maximum depth:</strong> {treeStats.maxDepth || 0}<br/>
               {treeStats.durationMs && (
                 <>
-                  • <strong>Thời gian thực thi:</strong> {treeStats.durationMs}ms<br/>
-                  • <strong>Tốc độ:</strong> ~{treeStats.totalNodes && treeStats.durationMs ? Math.round(treeStats.totalNodes / treeStats.durationMs) : 0} nodes/ms
+                  • <strong>Execution time:</strong> {treeStats.durationMs}ms<br/>
+                  • <strong>Speed:</strong> ~{treeStats.totalNodes && treeStats.durationMs ? Math.round(treeStats.totalNodes / treeStats.durationMs) : 0} nodes/ms
                 </>
               )}
             </Typography>
             
-            {/* Progress bar hiệu quả pruning */}
+            {/* Pruning efficiency progress bar */}
             <Box sx={{ mt: 2 }}>
               <Typography variant="caption" color="text.secondary">
-                Hiệu quả cắt tỉa:
+                Pruning efficiency:
               </Typography>
               <LinearProgress 
                 variant="determinate" 
@@ -201,11 +224,11 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
             </Box>
           </Box>
 
-          {/* Phân bổ Cutoff */}
+          {/* Cutoff Distribution */}
           {treeStats.cutoffs && (
             <Box sx={{ p: 2, backgroundColor: 'warning.light', borderRadius: 1, mb: 2 }}>
               <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
-                ✂️ Phân bổ Cutoff:
+                ✂️ Cutoff Distribution:
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -215,7 +238,7 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
                     </Typography>
                     <Typography variant="caption">Alpha Cutoff</Typography>
                     <Typography variant="caption" display="block" color="text.secondary">
-                      (tại node MAX)
+                      (at MAX node)
                     </Typography>
                   </Box>
                 </Grid>
@@ -226,7 +249,7 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
                     </Typography>
                     <Typography variant="caption">Beta Cutoff</Typography>
                     <Typography variant="caption" display="block" color="text.secondary">
-                      (tại node MIN)
+                      (at MIN node)
                     </Typography>
                   </Box>
                 </Grid>
@@ -239,7 +262,7 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
             <Accordion defaultExpanded={false} sx={{ mb: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                  🌳 Branching Factor theo độ sâu
+                  🌳 Branching Factor by Depth
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -247,7 +270,7 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell><strong>Độ sâu</strong></TableCell>
+                        <TableCell><strong>Depth</strong></TableCell>
                         <TableCell><strong>Branching</strong></TableCell>
                         <TableCell><strong>Evals</strong></TableCell>
                       </TableRow>
@@ -264,19 +287,19 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
                   </Table>
                 </TableContainer>
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  💡 Branching giảm dần do pruning hiệu quả
+                  💡 Branching decreases due to effective pruning
                 </Typography>
               </AccordionDetails>
             </Accordion>
           )}
 
-          {/* Lợi ích */}
+          {/* Benefits */}
           <Box sx={{ p: 1.5, backgroundColor: 'success.light', borderRadius: 1 }}>
             <Typography variant="caption">
-              💡 <strong>Lợi ích:</strong> Alpha-Beta pruning giúp giảm {treeStats.prunedNodes?.toLocaleString() || 0} nhánh 
-              không cần thiết, tăng tốc độ tính toán đáng kể so với Minimax thuần túy!
+              💡 <strong>Benefits:</strong> Alpha-Beta pruning helps reduce {treeStats.prunedNodes?.toLocaleString() || 0} unnecessary 
+              branches, significantly speeding up computation compared to pure Minimax!
               {treeStats.cutoffs && (
-                <> Tổng cộng {(treeStats.cutoffs.alphaCut || 0) + (treeStats.cutoffs.betaCut || 0)} lần cutoff xảy ra.</>
+                <> A total of {(treeStats.cutoffs.alphaCut || 0) + (treeStats.cutoffs.betaCut || 0)} cutoffs occurred.</>
               )}
             </Typography>
           </Box>
@@ -285,14 +308,14 @@ const AlphaBetaTree = ({ traceData, onClose }) => {
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Chú thích */}
+      {/* Explanation */}
       <Box sx={{ p: 2, backgroundColor: 'info.light', borderRadius: 1 }}>
         <Typography variant="caption" color="text.secondary">
-          <strong>🔍 Giải thích thuật toán:</strong><br/>
-          • <strong>Alpha (α):</strong> Giá trị tối ưu hiện tại của MAX (AI)<br/>
-          • <strong>Beta (β):</strong> Giá trị tối ưu hiện tại của MIN (Đối thủ)<br/>
-          • <strong>Pruning:</strong> Khi β ≤ α, các nhánh còn lại bị cắt bỏ vì không thể cải thiện kết quả<br/>
-          • Ô sáng màu vàng là nước đi AI đã chọn ở lượt này
+          <strong>🔍 Algorithm Explanation:</strong><br/>
+          • <strong>Alpha (α):</strong> Current best value for MAX (AI)<br/>
+          • <strong>Beta (β):</strong> Current best value for MIN (Opponent)<br/>
+          • <strong>Pruning:</strong> When β ≤ α, remaining branches are cut off as they cannot improve the result<br/>
+          • The highlighted yellow square is the move the AI chose for this turn
         </Typography>
       </Box>
     </ExplanationContainer>

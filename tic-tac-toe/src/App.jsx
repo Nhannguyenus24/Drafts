@@ -196,7 +196,7 @@ function App() {
 
     // Prevent human moves when it's AI's turn
     if ((gameMode === 'easy' || gameMode === 'hard') && currentPlayer === 'O') {
-      setAlertMessage('Wait for the bot to make its move!');
+      setAlertMessage('Wait for bot to make its move!');
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 2000);
       return;

@@ -96,6 +96,9 @@ const GameInfo = ({
             onChange={(e) => onGameModeChange(e.target.value)}
             disabled={isGameActive}
           >
+            <MenuItem value="pvp">
+              Player vs Player
+            </MenuItem>
             <MenuItem value="easy">
               Player vs Easy Bot
             </MenuItem>
@@ -140,7 +143,7 @@ const GameInfo = ({
         
         {gameMode === 'hard' && !winner && (
           <Typography variant="caption" color="primary" textAlign="center" sx={{ mt: 1 }}>
-            Cây quyết định Alpha-Beta sẽ hiển thị sau khi game kết thúc!
+            Alpha-Beta decision tree will be shown after the game ends!
           </Typography>
         )}
       </Stack>

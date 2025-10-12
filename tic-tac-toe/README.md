@@ -2,12 +2,9 @@
 
 A modern, responsive Tic-Tac-Toe game built with React and Material-UI featuring multiple game modes including AI opponents with different difficulty levels.
 
-![Tic-Tac-Toe Game](https://via.placeholder.com/600x400/2196f3/ffffff?text=Tic-Tac-Toe+Game)
-
 ## 🎮 Features
 
 ### Game Modes
-- **Player vs Player**: Classic two-player mode
 - **Player vs Easy Bot**: Play against a random-move AI
 - **Player vs Hard Bot**: Challenge an unbeatable AI using minimax with alpha-beta pruning
 - **Bot vs Bot**: Watch two AI opponents battle it out with auto-play feature
@@ -18,9 +15,7 @@ A modern, responsive Tic-Tac-Toe game built with React and Material-UI featuring
 
 ### User Interface
 - **Material-UI Design**: Modern, clean interface with beautiful animations
-- **Responsive Layout**: Works perfectly on desktop, tablet, and mobile devices
-- **Real-time Score Tracking**: Keep track of wins, losses, and draws
-- **Game Status Indicators**: Clear feedback on game state and current player
+- **Responsive Layout**: Works perfectly on desktop, tablet
 - **Winning Line Highlighting**: Visual indication of winning combinations
 
 ### Additional Features
@@ -94,11 +89,6 @@ A modern, responsive Tic-Tac-Toe game built with React and Material-UI featuring
 
 ### Game Modes Explained
 
-#### Player vs Player
-- Two human players take turns
-- X always goes first
-- Perfect for local multiplayer
-
 #### Player vs Easy Bot
 - You play as X, bot plays as O
 - Bot makes random moves
@@ -129,13 +119,6 @@ The hard bot uses the minimax algorithm, a decision-making algorithm for turn-ba
   - +10 for AI wins (adjusted by depth for faster wins)
   - -10 for human wins (adjusted by depth for slower losses)
   - 0 for draws
-
-### Why the Hard Bot Never Loses
-
-Tic-tac-toe is a solved game. With perfect play:
-- The first player (X) can force a win or draw
-- The second player (O) can force a draw
-- Our AI plays perfectly, so it never makes suboptimal moves
 
 ## 🏗️ Project Structure
 
@@ -188,51 +171,6 @@ The game uses Material-UI's theming system. You can customize colors, fonts, and
 - All game rules are in `gameLogic.js`
 - Easily extendable for larger boards or different win conditions
 
-## 📱 Browser Support
-
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
-
-## 🎯 Educational Value
-
-This project demonstrates:
-- **Game Theory**: Implementation of optimal play strategies
-- **Algorithms**: Minimax with alpha-beta pruning
-- **React Patterns**: State management, hooks, and component composition
-- **UI/UX Design**: Material Design principles and responsive layouts
-- **Software Architecture**: Clean code organization and separation of concerns
-
-Perfect for learning about:
-- AI game algorithms
-- React development
-- Material-UI implementation
-- Docker containerization
-- Modern JavaScript patterns
-
----
-
-**Enjoy playing and learning!** 🎉
-
-For questions or issues, please open an issue on GitHub.
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
