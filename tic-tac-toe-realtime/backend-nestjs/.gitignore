@@ -1,6 +1,10 @@
 # compiled output
 /dist
 /node_modules
+/build
+/out
+/.nest
+/target
 
 # Logs
 logs
@@ -13,10 +17,12 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+Thumbs.db
 
 # Tests
 /coverage
 /.nyc_output
+/test-results
 
 # IDEs and editors
 /.idea
@@ -26,6 +32,9 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+*.swp
+*.swo
+*~
 
 # IDE - VSCode
 .vscode/*
@@ -44,10 +53,27 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+.cache
 
 # Runtime data
 pids
 *.pid
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Java/Spring Boot (if any)
+*.class
+*.jar
+*.war
+
 *.seed
 *.pid.lock
 
