@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- Header with Create Button -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>
+          All Courses
+        </h1>
+        <p class="text-gray-600">Browse and explore our collection of courses</p>
+      </div>
+      <a href="create-course.html" 
+         class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+        <i class="fas fa-plus-circle"></i>
+        <span>Create New Course</span>
+      </a>
+    </div>
+
+    <!-- Course Card 1 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"
+            alt="Complete Google NotebookLM Course 2025" class="w-full h-full object-cover">
+          <div class="absolute top-4 left-4 flex gap-2">
+            <i class="fas fa-book-open text-white text-2xl drop-shadow-lg"></i>
+            <i class="fas fa-bullhorn text-white text-2xl drop-shadow-lg"></i>
+          </div>
+          <div class="absolute bottom-4 left-4">
+            <i class="fas fa-chart-line text-white text-2xl drop-shadow-lg"></i>
+          </div>
+          <div class="absolute bottom-4 right-4">
+            <i class="fab fa-youtube text-white text-3xl drop-shadow-lg"></i>
+          </div>
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              Complete Google NotebookLM Course 2025: Beginner to Pro
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Unlock AI-Powered Research: Practical Guide to Document Analysis & Insights
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Yash Thakker</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.7</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(337)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>1 total hour</span>
+              <span>•</span>
+              <span>11 lectures</span>
+              <span>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫399,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 2 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop"
+            alt="NotebookLM Generative AI" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              NotebookLM : Generative AI Interacting with Your Own Data
+            </h2>
+            <p class="text-gray-600 mb-3">
+              NotebookLM is an interactive AI playground for data analysis and machine learning from the Google Gemini
+              team
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Scott Duffy • 1,000,000+ Students</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.3</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(337)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600 mb-3">
+              <span>1 total hour</span>
+              <span>•</span>
+              <span>15 lectures</span>
+              <span>•</span>
+              <span>Beginner</span>
+            </div>
+
+            <!-- Bestseller Badge -->
+            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded">
+              Bestseller
+            </span>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫399,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 3 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=400&h=300&fit=crop"
+            alt="Google NotebookLM Complete Beginners Guide" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              Google NotebookLM: Complete Beginners Guide
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Use artificial intelligence to conduct research and create content
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Tracey Barron</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.4</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(273)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>0.5 total hours</span>
+              <span>•</span>
+              <span>6 lectures</span>
+              <span>•</span>
+              <span>Beginner</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫399,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 4 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop"
+            alt="NotebookLM Masterclass" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              NotebookLM Masterclass: Transform Your Learning with AI
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Learn NotebookLM From Start To Finish, Use AI To Create Podcasts, Analyze Documents, Manage Notes Easily
+              with NotebookLM
+            </p>
+            <p class="text-sm text-gray-700 mb-2">DFA Course Academy, Krystian Wiśtarewicz</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.1</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(166)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>7 total hours</span>
+              <span>•</span>
+              <span>62 lectures</span>
+              <span>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫909,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 5 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop"
+            alt="Mastering Google NotebookLM" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              Mastering Google NotebookLM: An AI-Powered Research Tool
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Unlock the Power of AI for Smarter Research, Content Creation, and Productivity with Google NotebookLM
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Gopaluni Sai Karthik</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.1</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(134)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>1 total hour</span>
+              <span>•</span>
+              <span>11 lectures</span>
+              <span>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫399,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 6 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop"
+            alt="NotebookLM Mastery" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              NotebookLM Mastery: Organize, Analyze, and Optimize with AI
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Master AI-Powered Research and Productivity with NotebookLM for Smarter Workflows and Better Insights
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Anton Voroniuk, Anton Voroniuk Support</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.4</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(120)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>3.5 total hours</span>
+              <span>•</span>
+              <span>36 lectures</span>
+              <span>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫699,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Card 7 -->
+    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- Course Image -->
+        <div class="md:w-1/3 relative">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop"
+            alt="Google NotebookLM" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Course Info -->
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">
+              Google NotebookLM
+            </h2>
+            <p class="text-gray-600 mb-3">
+              Master Google NotebookLM: AI-Powered Research, Productivity Enhancement & Real-World Applications
+            </p>
+            <p class="text-sm text-gray-700 mb-2">Start-Tech Academy</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-orange-600 font-bold">4.5</span>
+              <div class="flex text-orange-500">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-600 text-sm">(104)</span>
+            </div>
+
+            <!-- Course Details -->
+            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span>1 total hour</span>
+              <span>•</span>
+              <span>12 lectures</span>
+              <span>•</span>
+              <span>All Levels</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center justify-end gap-2 mt-4">
+            <span class="text-2xl font-bold text-gray-900">₫279,000</span>
+            <span class="text-lg text-gray-400 line-through">₫399,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mt-10 text-sm">
+      <span class="text-gray-600">Showing 1-7 of 42 courses</span>
+      <div class="inline-flex items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <button class="px-4 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors">
+          <i class="fas fa-chevron-left mr-2 text-xs"></i>
+          Previous
+        </button>
+
+        <div class="flex divide-x divide-gray-200 text-gray-700">
+          <button class="px-4 py-2 font-semibold bg-blue-50 text-blue-600">1</button>
+          <button class="px-4 py-2 hover:bg-gray-50 transition-colors">2</button>
+          <button class="px-4 py-2 hover:bg-gray-50 transition-colors">3</button>
+          <span class="px-4 py-2 text-gray-400">...</span>
+          <button class="px-4 py-2 hover:bg-gray-50 transition-colors">6</button>
+        </div>
+
+        <button class="px-4 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors">
+          Next
+          <i class="fas fa-chevron-right ml-2 text-xs"></i>
+        </button>
+      </div>
+    </nav>
+  </div>
+</body>
+
+</html>
